@@ -1,53 +1,60 @@
 // import React, { useState, useEffect } from 'react';
 
-// function calculateTime(seconds) {
-//   const days = Math.floor(seconds / (3600 * 24));
-//   const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-//   const minutes = Math.floor((seconds % 3600) / 60);
-//   const remainingSeconds = seconds % 60;
-
-//   return {
-//     days,
-//     hours,
-//     minutes,
-//     seconds: remainingSeconds,
-//   };
-// }
-
 // export function TimerCount() {
-//   const [totalSeconds, setTotalSeconds] = useState(0); // Початкова кількість секунд
-//   const [time, setTime] = useState(calculateTime(totalSeconds)); // Стан для поточного часу
+//   const [timeLeft, setTimeLeft] = useState(0);
+//   const [buttonClicked, setButtonClicked] = useState(null);
 
-//   // Ефект для оновлення часу кожну секунду
 //   useEffect(() => {
-//     const intervalId = setInterval(() => {
-//       setTotalSeconds(prevSeconds => prevSeconds + 1);
+//     if (timeLeft <= 0) {
+//       // Таймер закінчився, можливо, ви хочете виконати якісь дії тут
+//       return;
+//     }
+
+//     const timerId = setInterval(() => {
+//       setTimeLeft(prevTime => prevTime - 1);
 //     }, 1000);
 
 //     return () => {
-//       clearInterval(intervalId);
+//       clearInterval(timerId);
 //     };
-//   }, []);
+//   }, [timeLeft]);
 
-//   // Ефект для оновлення відображення часу
 //   useEffect(() => {
-//     setTime(calculateTime(totalSeconds));
-//   }, [totalSeconds]);
+//     if (buttonClicked === 'eventFirst') {
+//       setTimeLeft(14 * 24 * 60 * 60); // 14 днів у секундах
+//     } else if (buttonClicked === 'eventSecond') {
+//       setTimeLeft(7 * 24 * 60 * 60); // 7 днів у секундах
+//     }
+//   }, [buttonClicked]);
+
+//   // Перетворюємо секунди у дні, години, хвилини, і секунди
+//   const days = Math.floor(timeLeft / 86400);
+//   const hours = Math.floor((timeLeft % 86400) / 3600);
+//   const minutes = Math.floor((timeLeft % 3600) / 60);
+//   const seconds = timeLeft % 60;
 
 //   return (
 //     <div>
-//       <p>Days: {time.days}</p>
-//       <p>Hours: {time.hours}</p>
-//       <p>Minutes: {time.minutes}</p>
-//       <p>Seconds: {time.seconds}</p>
+//       <h2>Таймер зворотнього відліку</h2>
+//       <p>
+//         Залишилося: {days} днів, {hours} годин, {minutes} хвилин, {seconds}{' '}
+//         секунд
+//       </p>
+//       <button onClick={() => setButtonClicked('eventFirst')}>
+//         Подія 1 (14 днів)
+//       </button>
+//       <button onClick={() => setButtonClicked('eventSecond')}>
+//         Подія 2 (7 днів)
+//       </button>
 //     </div>
 //   );
 // }
+
 import React, { useState, useEffect } from 'react';
 
-export function TimerCount() {
-  //   const [initialTime, setInitialTime] = useState(0); // Початковий час у секундах
-  const [timeLeft, setTimeLeft] = useState(0);
+export function TimerCount({ timerDuration, onResetTimer }) {
+  const [timeLeft, setTimeLeft] = useState(timerDuration);
+  const [buttonClicked, setButtonClicked] = useState(null);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -64,6 +71,16 @@ export function TimerCount() {
     };
   }, [timeLeft]);
 
+  useEffect(() => {
+    if (buttonClicked === 'eventFirst') {
+      setTimeLeft(14 * 24 * 60 * 60); // 14 днів у секундах
+      onResetTimer();
+    } else if (buttonClicked === 'eventSecond') {
+      setTimeLeft(7 * 24 * 60 * 60); // 7 днів у секундах
+      onResetTimer();
+    }
+  }, [buttonClicked, onResetTimer]);
+
   // Перетворюємо секунди у дні, години, хвилини, і секунди
   const days = Math.floor(timeLeft / 86400);
   const hours = Math.floor((timeLeft % 86400) / 3600);
@@ -73,16 +90,20 @@ export function TimerCount() {
   return (
     <div>
       <h2>Таймер зворотнього відліку</h2>
-      {timeLeft > 0 ? (
-        <div>
-          <p>
-            Залишилося: {days} днів, {hours} годин, {minutes} хвилин, {seconds}{' '}
-            секунд
-          </p>
-        </div>
-      ) : (
-        <p>Час вийшов!</p>
-      )}
+      <p>
+        Залишилося: {days} днів, {hours} годин, {minutes} хвилин, {seconds}{' '}
+        секунд
+      </p>
+      {
+        <button onClick={() => setButtonClicked('eventFirst')}>
+          Подія 1 (14 днів)
+        </button>
+      }
+      {
+        <button onClick={() => setButtonClicked('eventSecond')}>
+          Подія 2 (7 днів)
+        </button>
+      }
     </div>
   );
 }
