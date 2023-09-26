@@ -11,7 +11,7 @@ const TimerContainer = styled.div`
   justify-content: center;
   font-family: 'Saira Extra Condensed', sans-serif;
   font-size: 48px;
-  color: white;
+  color: ;
 `;
 
 const TimerNumberWrapper = styled(motion.div)`
