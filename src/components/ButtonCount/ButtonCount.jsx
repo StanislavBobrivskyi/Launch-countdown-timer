@@ -1,3 +1,5 @@
+import { ButtonReset } from './ButtonCount.styled';
+
 export function ButtonCount({ isVisible, onResetTimer }) {
   const handleResetClick = () => {
     onResetTimer();
@@ -6,6 +8,6 @@ export function ButtonCount({ isVisible, onResetTimer }) {
   };
 
   return isVisible ? (
-    <button onClick={handleResetClick}>Обнулити таймер</button>
+    <ButtonReset onClick={handleResetClick}>Обнулити таймер</ButtonReset>
   ) : null;
 }

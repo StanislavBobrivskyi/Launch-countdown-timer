@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ButtonCount } from './ButtonCount/ButtonCount';
 
 import { TimerCount } from './TimerCount/TimerCount';
-
+import { Wrapper } from './App.styled';
 export function App() {
   const [timerDuration, setTimerDuration] = useState(0);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
@@ -18,7 +18,7 @@ export function App() {
   };
 
   return (
-    <div>
+    <Wrapper>
       <h1>Мій додаток з івентами і таймером</h1>
       <TimerCount
         timerDuration={timerDuration}
@@ -26,6 +26,6 @@ export function App() {
         isVisible={isButtonVisible}
       />
       <ButtonCount isVisible={isButtonVisible} onResetTimer={resetTimer} />
-    </div>
+    </Wrapper>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TimerNumber } from './TimerNumber';
-
+import { CountWrapper, CountNumbers, Button } from './TimerCount.styled';
 export function TimerCount({ timerDuration, onResetTimer }) {
   const [timeLeft, setTimeLeft] = useState(timerDuration);
   const [buttonClicked, setButtonClicked] = useState(null);
@@ -37,28 +37,28 @@ export function TimerCount({ timerDuration, onResetTimer }) {
   const seconds = timeLeft % 60;
 
   return (
-    <div>
+    <CountWrapper>
       <h2>Таймер зворотнього відліку</h2>
-      <>
-        Залишилося:
+      <p>Left for connection</p>
+      <CountNumbers>
         <TimerNumber number={days} />
         <TimerNumber number={hours} />
         <TimerNumber number={minutes} />
         <TimerNumber number={seconds} />
-      </>
+      </CountNumbers>
       <div>
         {
-          <button onClick={() => setButtonClicked('eventFirst')}>
+          <Button onClick={() => setButtonClicked('eventFirst')}>
             Подія 1 (14 днів)
-          </button>
+          </Button>
         }
         {
-          <button onClick={() => setButtonClicked('eventSecond')}>
+          <Button onClick={() => setButtonClicked('eventSecond')}>
             Подія 2 (7 днів)
-          </button>
+          </Button>
         }
       </div>
-    </div>
+    </CountWrapper>
   );
 }
 
