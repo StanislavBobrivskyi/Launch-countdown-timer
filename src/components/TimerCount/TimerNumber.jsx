@@ -1,80 +1,95 @@
-// import React, { useState, useEffect } from 'react';
-// import {
-//   TimerNumberContainer,
-//   TimerNumberFlip,
-//   TimerNumberFront,
-//   TimerNumberBack,
-// } from './TimerCount.styled'; // Імпорт стилів, які ви визначите
-
-// export function TimerNumber({ number }) {
-//   const [flip, setFlip] = useState(false);
-
-//   useEffect(() => {
-//     setFlip(true);
-
-//     const flipTimeout = setTimeout(() => {
-//       setFlip(false);
-//     }, 500); // Час анімації (0.5 секунди)
-
-//     return () => clearTimeout(flipTimeout);
-//   }, [number]);
-
-//   return (
-//     <TimerNumberContainer>
-//       <TimerNumberFlip flip={flip}>
-//         <TimerNumberFront>{number}</TimerNumberFront>
-//         <TimerNumberBack>{number}</TimerNumberBack>
-//       </TimerNumberFlip>
-//     </TimerNumberContainer>
-//   );
-// }
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  TimerNumberContainer,
-  TimerNumberFront,
-  TimerNumberBack,
-} from './TimerCount.styled';
+import styled from 'styled-components';
 
-const flipVariant = {
-  true: {
-    rotateY: 180,
-    perspective: '1500px', // Зміна перспективи
-    backgroundColor: 'black', // Зміна кольору заднього фону на чорний
+const TimerContainer = styled.div`
+  width: 100px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Saira Extra Condensed', sans-serif;
+  font-size: 48px;
+  color: white;
+`;
+
+const TimerNumberWrapper = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TimerNumberFront = styled.div`
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  backface-visibility: hidden;
+`;
+
+const TimerNumberBack = styled.div`
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: #3498db;
+  backface-visibility: hidden;
+  transform: rotateX(180deg);
+`;
+
+const flipVariants = {
+  front: {
+    opacity: 1,
+    rotateX: 180,
+    transition: {
+      duration: 1,
+    },
   },
-  false: {
-    rotateY: 0,
-    perspective: '1000px', // Повернення перспективи до початкового значення
-    backgroundColor: 'transparent', // Повернення заднього фону до початкового значення
+  back: {
+    opacity: 1,
+    rotateX: 0,
+    transition: {
+      duration: 1,
+    },
   },
 };
 
-export function TimerNumber({ number }) {
-  const [prevNumber, setPrevNumber] = useState(number);
+function TimerNumber({ number }) {
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
-    if (number !== prevNumber) {
-      // Змінюємо стан тільки коли number змінилося
-      setPrevNumber(number);
-    }
-  }, [number, prevNumber]);
+    setIsFlipped(true);
+
+    const flipTimeout = setTimeout(() => {
+      setIsFlipped(false);
+    }, 1000);
+
+    return () => clearTimeout(flipTimeout);
+  }, [number]);
 
   return (
-    <TimerNumberContainer>
-      <motion.div
-        variants={flipVariant}
-        initial="false"
-        animate={number !== prevNumber ? 'true' : 'false'}
-        transition={{ duration: 0.5 }}
-        style={{
-          perspective: '1000px', // Початкове значення перспективи
-          backgroundColor: 'transparent', // Початкове значення заднього фону
-        }}
+    <TimerContainer>
+      <TimerNumberWrapper
+        variants={flipVariants}
+        initial="front"
+        animate={isFlipped ? 'back' : 'front'}
       >
         <TimerNumberFront>{number}</TimerNumberFront>
         <TimerNumberBack>{number}</TimerNumberBack>
-      </motion.div>
-    </TimerNumberContainer>
+      </TimerNumberWrapper>
+    </TimerContainer>
   );
 }
+
+export default TimerNumber;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TimerNumber } from './TimerNumber';
+import TimerNumber from './TimerNumber';
 import { CountWrapper, CountNumbers, Button } from './TimerCount.styled';
 export function TimerCount({ timerDuration, onResetTimer }) {
   const [timeLeft, setTimeLeft] = useState(timerDuration);
